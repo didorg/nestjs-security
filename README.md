@@ -1,5 +1,4 @@
-# NestJS GraphQL and PostgreSQL Demo   
-## Pet-Store in NestJS & GraphQL with PostgreSQL
+# NestJS Security
 
 ## Installation
 
@@ -21,84 +20,6 @@ $ npm run start:prod
 ```
 ### GraphQL endpoint  
 `http://localhost:3000/graphql`  
-  - Create a Pet:  
-  ```
-  mutation {
-    createPet(PetInputDTO: { name: "Koty", type: "Parrot" }) {
-      id
-      name
-      type
-    }
-  }
-  ```   
-  - Get all Owners:  
-  ```
-  query {
-    owners {
-      id
-      name
-      pets {
-        id
-        name
-        type
-      }
-    }
-  }
-  ```  
-  R/
-  ```
- {
-  "data": {
-    "owners": [
-      {
-        "id": 1,
-        "name": "Adam",
-        "pets": [
-          {
-            "id": 1,
-            "name": "Campeon",
-            "type": "Dog"
-          }
-        ]
-      },
-      {
-        "id": 3,
-        "name": "Barack",
-        "pets": []
-      },
-      {
-        "id": 2,
-        "name": "John",
-        "pets": [
-          {
-            "id": 2,
-            "name": "Zoee",
-            "type": "Cat"
-          },
-          {
-            "id": 3,
-            "name": "Koty",
-            "type": "Parrot"
-          }
-        ]
-      }
-    ]
-  }
-}
-  ```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
 
 ## Debugging
 https://javascript.plainenglish.io/debugging-nestjs-in-vscode-d474a088c63b
