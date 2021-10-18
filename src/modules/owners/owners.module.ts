@@ -7,6 +7,6 @@ import { OwnersService } from './services/owners.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Owner])],
-  providers: [OwnersResolver, OwnersService]
+  providers: [OwnersResolver, OwnersService],
 })
 export class OwnersModule {}
