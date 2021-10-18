@@ -8,6 +8,7 @@ import { PetsModule } from './modules/pets/pets.module';
 import { DatabaseModule } from './persistence/db/database.module';
 import { OwnersModule } from './modules/owners/owners.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AuthModule } from './modules/auth/auth.module';
     DatabaseModule,
     OwnersModule,
     AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
