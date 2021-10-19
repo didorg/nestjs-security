@@ -21,7 +21,7 @@ export class UsersService {
 
   // AuthService return the UserOutputDTO with the token
   async createUser(userIn: UserInputDTO): Promise<User> {
-    const userCreated: User = await this.userRepository.create(userIn);
+    const userCreated: User = this.userRepository.create(userIn);
     const user: User =  await this.userRepository.save(userCreated);
     return user;
   }
