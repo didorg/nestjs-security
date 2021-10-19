@@ -3,18 +3,13 @@ import { IsNotEmpty } from "class-validator";
 
 @ObjectType()
 export class UserOutputDTO {
-  @Field(() => Int, { nullable: true })
-  id: number;
 
   @Field()
-  @IsNotEmpty()
   userName: string;
 
-  @Field({ nullable: true })
-  @IsNotEmpty()
+  @Field()
   email: string;
 
-  @Field({ nullable: true })
-  @IsNotEmpty()
-  password: string;
+  @Field()
+  token: string;
 }
