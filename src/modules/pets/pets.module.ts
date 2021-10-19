@@ -1,13 +1,12 @@
-import { Module } from '@nestjs/common';
-import { PetService } from './services/pet/pet.service';
-import { PetResolver } from './resolvers/pet/pet.resolver';
-
-import { TypeOrmModule } from '@nestjs/typeorm';
-import Pet from 'src/persistence/entities/pet/pet.entity';
+import { Module } from "@nestjs/common";
+import { PetService } from "./services/pet/pet.service";
+import { PetResolver } from "./resolvers/pet/pet.resolver";
+import { PetRepository } from "src/persistence/repositories/pet.repository";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Pet])],
-  providers: [PetService, PetResolver],
+  imports: [],
+  providers: [PetResolver, PetService, PetRepository],
+  exports: [PetService],
   controllers: [],
 })
 export class PetsModule {}

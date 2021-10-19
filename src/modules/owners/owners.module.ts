@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 
 import { OwnersResolver } from './resolvers/owners.resolver';
-import { Owner } from 'src/persistence/entities/owners/owner.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { OwnersService } from './services/owners.service';
+import { OwnerRepository } from 'src/persistence/repositories/owner.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Owner])],
-  providers: [OwnersResolver, OwnersService],
+  imports: [],
+  providers: [OwnersResolver, OwnersService, OwnerRepository],
+  exports:[OwnersService],
+  controllers:[],
 })
 export class OwnersModule {}

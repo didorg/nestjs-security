@@ -1,34 +1,29 @@
-import { Injectable } from '@nestjs/common';
-
-import { InjectRepository } from '@nestjs/typeorm';
-import Pet from 'src/persistence/entities/pet/pet.entity';
-import { Repository } from 'typeorm';
-import { PetInputDTO } from '../../dto/pet.in.dto';
-import { PetOutputDTO } from '../../dto/pet.out.dto';
+import { Injectable } from "@nestjs/common";
+import Pet from "src/persistence/entities/pet/pet.entity";
+import { PetRepository } from "src/persistence/repositories/pet.repository";
+import { PetInputDTO } from "../../dto/pet.in.dto";
+import { PetOutputDTO } from "../../dto/pet.out.dto";
 
 @Injectable()
 export class PetService {
-  constructor(
-    @InjectRepository(Pet)
-    private petsRepository: Repository<Pet>,
-  ) {}
+  constructor(private readonly petRepository: PetRepository) {}
 
   async createPet(petIn: PetInputDTO): Promise<PetOutputDTO> {
     const pet: Pet = await this.mapperPetInputDTOToPet(petIn);
-    const petCreated: Pet = this.petsRepository.create(pet);
-    const petSaved: Pet = await this.petsRepository.save(petCreated);
+    const petCreated: Pet = this.petRepository.create(pet);
+    const petSaved: Pet = await this.petRepository.save(petCreated);
     const petOut: PetOutputDTO = await this.mapperPetToPetOutputDTO(petSaved);
     return petOut;
   }
 
   async findAll(): Promise<PetOutputDTO[]> {
-    const pets = await this.petsRepository.find();
+    const pets = await this.petRepository.find();
     const petOutputDTOs = await this.mapperPetsToPetOutputDTOs(pets);
     return petOutputDTOs;
   }
 
   async findOne(id: number): Promise<PetOutputDTO> {
-    const petById: Pet = await this.petsRepository.findOneOrFail(id);
+    const petById: Pet = await this.petRepository.findOneOrFail(id);
     const petOutputDTO = await this.mapperPetToPetOutputDTO(petById);
     return petOutputDTO;
   }
@@ -49,7 +44,7 @@ export class PetService {
   }
 
   private async mapperPetsToPetOutputDTOs(
-    pets: Pet[],
+    pets: Pet[]
   ): Promise<PetOutputDTO[]> {
     let petsOut: PetOutputDTO[] = [];
 
