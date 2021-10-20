@@ -44,23 +44,11 @@ export class AuthService {
     }
   }
 
-  public async getAuthenticatedUser(
-    email: string,
-    hashedPassword: string
-  ): Promise<UserOutputDTO> {
+  public async login(email: string, password: string): Promise<UserOutputDTO> {
     try {
       const user = await this.usersService.getByEmail(email);
-      const isPasswordMatching: boolean = compareSync(
-        user.password,
-        hashedPassword
-      );
-      if (!isPasswordMatching) {
-        throw new HttpException(
-          "Wrong credentials provided",
-          HttpStatus.BAD_REQUEST
-        );
-      }
-      const userOut = await this.mapperUserToUserOutDTO(user, hashedPassword);
+      await this.verifyPassword(password, user.password);
+      const userOut = await this.mapperUserToUserOutDTO(user, user.password);
       return userOut;
     } catch (error) {
       throw new HttpException(
@@ -68,6 +56,23 @@ export class AuthService {
         HttpStatus.BAD_REQUEST
       );
     }
+  }
+
+  private async verifyPassword(
+    plainTextPassword: string,
+    hashedPassword: string
+  ): Promise<boolean> {
+    const isPasswordMatching: boolean = compareSync(
+      plainTextPassword,
+      hashedPassword
+    );
+    if (!isPasswordMatching) {
+      throw new HttpException(
+        "Wrong credentials provided",
+        HttpStatus.BAD_REQUEST
+      );
+    }
+    return isPasswordMatching;
   }
 
   public async mapperUserToUserOutDTO(user: User, hashedPassword: string) {
