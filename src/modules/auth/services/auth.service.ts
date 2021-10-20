@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { UsersService } from "../users/users.service";
+import { UsersService } from "../../users/services/users.service";
 import { hashSync, genSaltSync, compareSync } from "bcrypt";
-import { IUser } from "../users/dto/user.interface";
-import { UserInputDTO } from "../users/dto/user.in.dto";
-import { UserOutputDTO } from "../users/dto/user.out.dto";
+import { IUser } from "../../users/dto/user.interface";
+import { UserInputDTO } from "../../users/dto/user.in.dto";
+import { UserOutputDTO } from "../../users/dto/user.out.dto";
 import User from "src/persistence/entities/user/user.entity";
 
 @Injectable()

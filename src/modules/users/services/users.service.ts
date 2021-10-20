@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import User from "src/persistence/entities/user/user.entity";
 import { UserRepository } from "src/persistence/repositories/user.repository";
-import { UserInputDTO } from "./dto/user.in.dto";
-import { UserOutputDTO } from "./dto/user.out.dto";
+import { UserInputDTO } from "../dto/user.in.dto";
+import { UserOutputDTO } from "../dto/user.out.dto";
 
 @Injectable()
 export class UsersService {
