@@ -10,6 +10,6 @@ export class UserOutputDTO {
   @Field()
   email: string;
 
-  @Field()
-  token: string;
+  @Field({ nullable: true })
+  token?: string;
 }

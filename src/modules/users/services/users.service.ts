@@ -19,10 +19,23 @@ export class UsersService {
     );
   }
 
+  async checkEmail(email: string): Promise<boolean> {
+    let sameEmail = false;
+    const user: User = await this.userRepository.findOne({ email });
+    if (user) {
+      sameEmail = email === user.email ? true : false;
+    }
+    return sameEmail;
+  }
+
+  async findAll() {
+    return "A list of users";
+  }
+
   // AuthService return the UserOutputDTO with the token
   async createUser(userIn: UserInputDTO): Promise<User> {
     const userCreated: User = this.userRepository.create(userIn);
-    const user: User =  await this.userRepository.save(userCreated);
+    const user: User = await this.userRepository.save(userCreated);
     return user;
   }
 }

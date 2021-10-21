@@ -10,45 +10,37 @@ import User from "src/persistence/entities/user/user.entity";
 export class AuthService {
   constructor(private usersService: UsersService) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.usersService.getByEmail(email);
-    if (user && user.password === pass) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
-  }
-
   public async register(iuser: IUser): Promise<UserOutputDTO> {
-    const hashedPassword = hashSync(iuser.password, genSaltSync(10));
-    try {
-      const userInt: UserInputDTO = new UserInputDTO();
-      userInt.email = iuser.email;
-      userInt.password = hashedPassword;
-      // Create User with the hashedPassword
-      const user: User = await this.usersService.createUser(userInt);
-      // mapping user to UserOutputDTO
-      const userOut = await this.mapperUserToUserOutDTO(user, hashedPassword);
-      return userOut;
-    } catch (error) {
-      if (error?.code === PostgresErrorCode.UniqueViolation) {
+    if (!(await this.usersService.checkEmail(iuser.email))) {
+      const hashedPassword = hashSync(iuser.password, genSaltSync(10));
+      try {
+        const userInt: UserInputDTO = new UserInputDTO();
+        userInt.userName = iuser.userName;
+        userInt.email = iuser.email;
+        userInt.password = hashedPassword;
+        // Create User with the hashedPassword
+        const user: User = await this.usersService.createUser(userInt);
+        // mapping user to UserOutputDTO
+        const userOut: UserOutputDTO = await this.mapperUserToUserOutDTO(user);
+        return userOut;
+      } catch (error) {
         throw new HttpException(
-          "User with that email already exists",
-          HttpStatus.BAD_REQUEST
+          "Something went wrong",
+          HttpStatus.INTERNAL_SERVER_ERROR
         );
       }
+    } else
       throw new HttpException(
-        "Something went wrong",
-        HttpStatus.INTERNAL_SERVER_ERROR
+        `The email: ${iuser.email} already exist`,
+        HttpStatus.FOUND
       );
-    }
   }
 
   public async login(email: string, password: string): Promise<UserOutputDTO> {
     try {
       const user = await this.usersService.getByEmail(email);
       await this.verifyPassword(password, user.password);
-      const userOut = await this.mapperUserToUserOutDTO(user, user.password);
+      const userOut: UserOutputDTO = await this.mapperUserToUserOutDTO(user);
       return userOut;
     } catch (error) {
       throw new HttpException(
@@ -75,10 +67,10 @@ export class AuthService {
     return isPasswordMatching;
   }
 
-  public async mapperUserToUserOutDTO(user: User, hashedPassword: string) {
+  public async mapperUserToUserOutDTO(user: User): Promise<UserOutputDTO> {
     const userOut: UserOutputDTO = new UserOutputDTO();
+    userOut.userName = user.userName;
     userOut.email = user.email;
-    userOut.token = hashedPassword;
 
     return userOut;
   }

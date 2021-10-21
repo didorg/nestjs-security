@@ -16,16 +16,25 @@ type PetOutputDTO {
   owner: OwnerOutputDTO
 }
 
+type UserOutputDTO {
+  userName: String!
+  email: String!
+  token: String
+}
+
 type Query {
   pets: [PetOutputDTO!]!
   pet(id: Int!): PetOutputDTO!
   owners: [OwnerOutputDTO!]!
   owner(id: Int!): OwnerOutputDTO!
+  users: [UserOutputDTO!]!
+  user(email: String!): UserOutputDTO!
 }
 
 type Mutation {
   createPet(PetInputDTO: PetInputDTO!): PetOutputDTO!
   createOwner(OwnerInputDTO: OwnerInputDTO!): OwnerOutputDTO!
+  registerUser(UserInputDTO: UserInputDTO!): UserOutputDTO!
 }
 
 input PetInputDTO {
@@ -40,4 +49,12 @@ input OwnerInputDTO {
   id: Int
   name: String!
   pets: PetInputDTO!
+}
+
+input UserInputDTO {
+  id: Int
+  userName: String!
+  email: String!
+  phoneNumber: String
+  password: String!
 }

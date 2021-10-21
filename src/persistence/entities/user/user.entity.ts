@@ -1,7 +1,8 @@
+import { IUser } from "src/modules/users/dto/user.interface";
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-class User {
+class User implements IUser {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -11,7 +12,7 @@ class User {
   @Column({ nullable: false })
   userName: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   password: string;
 
   @BeforeInsert()
